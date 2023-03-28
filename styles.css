@@ -31,10 +31,14 @@ body{
     right: 0;
     background-color: #333;
     color: #fff;
-    padding: 10px;
-    margin: 10px;
-    /* animation: fadeOut 3s ease-in-out; */
+    padding: 0.5rem;
+    margin: 0.6rem;
+    /* animation: fadeOut 6s ease-in-out; */
  }
+
+ /* .notification:hover{
+    animation-play-state: paused;
+ } */
 
 .notification:hover .loader{
     animation-play-state: paused;
@@ -55,10 +59,9 @@ body{
     border: none;
     position: absolute;
     left: 0;
-    bottom: 5;
     display: flex;
     justify-content: flex-start;
-    animation: load 3s ease-in-out;
+    animation: load 4s ease-in-out;
 }
 
 .loader:hover {

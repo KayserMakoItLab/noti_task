@@ -1,6 +1,7 @@
 function useNotifications() {
     const notificationContainer = document.getElementById('notifications');
-    const delay = 4000
+    const delay = 4000;
+    let pausedTime;
     const notifications = [];
     const timeouts = [];
     const colour = {
@@ -42,21 +43,29 @@ function useNotifications() {
         const timeoutId = setTimeout(() => {
             removeNotification(notification);
         }, delay);
-        const startTime = Date.now();
-        const getRemainingTime = () => {
+
+        let startTime = Date.now();
+        const getRemainingTime = (delayTime) => {
+            const checkTime = !delayTime ? delay : delayTime;
             const elapsedTime = Date.now() - startTime;
-            const remainingTime = delay - elapsedTime;
+            console.log('elapsedTime', elapsedTime, 'checkTime', checkTime, 'startTime', startTime);
+            const remainingTime = checkTime - elapsedTime;
             return remainingTime
         };
-
+        
         notification.addEventListener('mouseenter', () => {
-             clearTimeout(timeoutId);
+            startTime = Date.now()
+            pausedTime = getRemainingTime()
+            clearTimeout(timeoutId);
+            console.log('pausedTime', pausedTime);
         });
 
         notification.addEventListener('mouseleave', () => {
             const timeoutId = setTimeout(() => {
                 removeNotification(notification);
-            }, getRemainingTime());
+            }, pausedTime);
+            startTime = Date.now()
+            getRemainingTime(pausedTime)
             timeouts.push(timeoutId);
         });
     }
@@ -72,19 +81,3 @@ function useNotifications() {
 }
 
 const { showNotification } = useNotifications();
-
-document.getElementById('success-button').addEventListener('click', () => {
-    showNotification('SUCCESS', 'Success!');
-});
-
-document.getElementById('error-button').addEventListener('click', () => {
-    showNotification('ERROR', 'Error!');
-});
-
-document.getElementById('info-button').addEventListener('click', () => {
-    showNotification('INFO', 'Info!');
-});
-
-document.getElementById('warning-button').addEventListener('click', () => {
-    showNotification('WARNING', 'Warning!');
-});
